@@ -85,7 +85,7 @@ public class UserService implements UserDetailsService {
         user.setFullName(userDTO.getFullName());
         user.setEmail(userDTO.getEmail());
         user.setCurrentDiscount(userDTO.getCurrentDiscount());
-        user.setBio(user.getBio());
+        user.setBio(userDTO.getBio());
         user.setAuthorities(userDTO.getAuthorities());
 
         try {

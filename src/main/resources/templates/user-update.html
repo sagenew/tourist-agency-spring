@@ -59,9 +59,9 @@
                                 </label>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="col-form-label" for="discount" th:text="#{users.update.password.label}"></label>
+                                <label class="col-form-label" for="discount" th:text="#{users.update.discount.label}"></label>
                                 <input type="text" th:field="*{currentDiscount}" class="form-control" id="discount"
-                                       th:placeholder="#{users.update.username.placeholder}">
+                                       th:placeholder="#{users.update.discount.placeholder}">
                                 <span th:if="${#fields.hasErrors('currentDiscount')}" th:errors="*{currentDiscount}"
                                       class="text-danger"></span>
                             </div>

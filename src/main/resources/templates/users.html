@@ -38,7 +38,64 @@
                         <tbody>
                         <tr th:each="user : ${users}">
                             <td><span th:text="${user.id}"></span></td>
-                            <td><span th:text="${user.username}"></span></td>
+                            <td><a href="#userDetailsModal" data-toggle="modal"
+                                   data-target="#userDetailsModal"
+                                   th:attrappend="data-target=${user.id}"
+                                   th:text="${user.username}"></a></td>
+                            <!--Start of user modal window-->
+                            <div aria-hidden="true"
+                                 aria-labelledby="userDetailsModalTitle"
+                                 class="modal fade"
+                                 id="userDetailsModal" role="dialog" tabindex="-1"
+                                 th:attrappend="id=${user.id}">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title lead" id="userDetailsModalTitle"
+                                                th:text="#{users.modal.title}">
+                                            </h5>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3>
+                                                        <span th:text="${user.username}"></span>
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.full_name}"></span>
+                                                        <span class="" th:text="${user.fullName}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.email}"></span>
+                                                        <span class="" th:text="${user.email}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.bio}"></span>
+                                                        <span class="" th:text="${user.bio}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.orders.discount}"></span>
+                                                        <span class="" th:text="${user.currentDiscount}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" data-dismiss="modal"
+                                                    th:text="#{tours.modal.button.close}"
+                                                    type="button">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of user modal window-->
                             <td><span th:text="${user.authorities}"></span></td>
                             <td class="text-center">
                                 <a th:href="@{/users/ban/{id}(id=${user.id})}"

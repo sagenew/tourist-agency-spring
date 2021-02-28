@@ -47,7 +47,7 @@ public class OrderController {
     @GetMapping("/tours/orders")
     public String getOrdersPage(Model model,
                                 @PageableDefault(sort = {"id"},
-                                        direction = Sort.Direction.ASC,
+                                        direction = Sort.Direction.DESC,
                                         size = 5) Pageable pageable) {
         if(!model.containsAttribute("discount")) {
             model.addAttribute("discount", orderService.getDiscount());

@@ -57,18 +57,20 @@
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='id',column_text=#{orders.id})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='user',column_text=#{orders.user})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='tour',column_text=#{orders.tour})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='price',column_text=#{orders.price})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='discount',column_text=#{orders.discount})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='fixedPrice',column_text=#{orders.fixed_price})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='status',column_text=#{orders.status})}" class="text-center"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="order : ${orders}">
-                            <td style="width: 15%"><span th:text="${order.id}"></span></td>
-                            <td style="width: 25%"><span th:text="${order.user.username}"></span></td>
-                            <td style="width: 25%"><a href="#tourDetailsModal" data-toggle="modal"
+                            <td><span th:text="${order.id}"></span></td>
+                            <td><a href="#tourDetailsModal" data-toggle="modal"
                                    data-target="#tourDetailsModal"
                                    th:attrappend="data-target=${order.tour.id}"
                                    th:text="${order.tour.name}"></a></td>
-                            <!--Start modal window-->
+                            <!--Start of tour modal window-->
                             <div aria-hidden="true"
                                  aria-labelledby="tourDetailsModalTitle"
                                  class="modal fade"
@@ -133,7 +135,69 @@
                                     </div>
                                 </div>
                             </div>
-                            <td style="width: 20%">
+                            <!--End of tour modal window-->
+                            <td><a href="#userDetailsModal" data-toggle="modal"
+                                   data-target="#userDetailsModal"
+                                   th:attrappend="data-target=${order.user.id}"
+                                   th:text="${order.user.username}"></a></td>
+                            <!--Start of user modal window-->
+                            <div aria-hidden="true"
+                                 aria-labelledby="userDetailsModalTitle"
+                                 class="modal fade"
+                                 id="userDetailsModal" role="dialog" tabindex="-1"
+                                 th:attrappend="id=${order.user.id}">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title lead" id="userDetailsModalTitle"
+                                                th:text="#{users.modal.title}">
+                                            </h5>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3>
+                                                        <span th:text="${order.user.username}"></span>
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.full_name}"></span>
+                                                        <span class="" th:text="${order.user.fullName}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.email}"></span>
+                                                        <span class="" th:text="${order.user.email}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.bio}"></span>
+                                                        <span class="" th:text="${order.user.bio}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{users.profile.orders.discount}"></span>
+                                                        <span class="" th:text="${order.user.currentDiscount}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" data-dismiss="modal"
+                                                    th:text="#{tours.modal.button.close}"
+                                                    type="button">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of user modal window-->
+                            <td><span th:text="${order.price}"></span></td>
+                            <td><span th:text="${order.discount}"></span></td>
+                            <td><span th:text="${order.fixedPrice}"></span></td>
+                            <td>
                                 <div class="btn-group btn-block" th:if="${order.isPending()}">
                                     <a class="btn btn-outline-success"
                                        th:href="@{/tours/orders/mark-paid/{id}(id=${order.id},page=${orders.number},size=${orders.size},sort=${orders.sort.toString().replaceAll(': ',',')})}"
