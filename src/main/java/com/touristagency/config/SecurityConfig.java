@@ -29,12 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/index", "/tours", "/js/**", "/images/**", "/css/**", "/access-denied", "/favicon.ico", "/error/**")
                 .permitAll()
-                .antMatchers("/users/**",
-                        "/tours/add", "/tours/update/**","/tours/delete/**", "/tours/make-hot/**",
-                        "/tours/orders", "/tours/orders/set-discount",  "/tours/orders/mark-paid/**", "/tours/orders/mark-denied/**")
-                .hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/users/**", "/tours/add", "/tours/update/**","/tours/delete/**")
+                .hasAuthority("ADMIN")
+                .antMatchers("/tours/make-hot/**", "/tours/orders", "/tours/orders/set-discount",  "/tours/orders/mark-paid/**", "/tours/orders/mark-denied/**")
+                .hasAnyAuthority("ADMIN", "MANAGER")
                 .antMatchers("/profile",  "/tours/orders/add/**", "/tours/orders/delete/**")
-                .hasAuthority("USER")
+                .hasAnyAuthority("ADMIN", "MANAGER", "USER")
                 .antMatchers("/registration", "/login")
                 .anonymous()
                 .anyRequest()

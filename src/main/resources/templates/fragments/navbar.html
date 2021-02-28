@@ -23,7 +23,7 @@
             <li class="nav-item active">
                 <a class="nav-link" th:href="@{/tours}" th:text="#{link.all_tours}"></a>
             </li>
-            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item active">
+            <li sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" class="nav-item active">
                 <a class="nav-link" th:href="@{/tours/orders}" th:text="#{link.all_orders}"></a>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item active">

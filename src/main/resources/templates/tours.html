@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>All tours</title>
@@ -43,7 +43,7 @@
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='groupSize',column_text=#{tours.group_size})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='hotel',column_text=#{tours.hotel_type})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='isHot',column_text=#{tours.is_hot})}"></th>
-                            <div sec:authorize="hasAuthority('ADMIN')">
+                            <div sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
                                 <th th:text="#{tours.make_hot.label}"></th>
                             </div>
                         </tr>
@@ -85,7 +85,7 @@
                                                     <div class="card-text">
                                                         <span class="text-primary"
                                                               th:text="#{tours.modal.price}"></span>
-                                                        <span class="" th:text="${tour.price}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(tour.price,1,1)}"></span>
                                                     </div>
                                                     <div class="card-text">
                                                         <span class="text-primary"
@@ -133,7 +133,7 @@
                             </div>
                             <!--End modal window-->
                             <td><span th:text="${tour.type}"></span></td>
-                            <td><span th:text="${tour.price}"></span></td>
+                            <td><span th:text="${#numbers.formatDecimal(tour.price,1,1)}"></span></td>
                             <td><span th:text="${tour.groupSize}"></span></td>
                             <td><span th:text="${tour.hotel}"></span></td>
                             <td>
@@ -142,7 +142,7 @@
                                 <img th:unless="${tour.isHot()}" th:src="@{/images/hot_icon_false.svg}" width="30"
                                      height="30">
                             </td>
-                            <td sec:authorize="hasAuthority('ADMIN')">
+                            <td sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
                                 <a th:href="@{/tours/make-hot/{id}(id=${tour.id},page=${tours.number},size=${tours.size},sort=${tours.sort.toString().replaceAll(': ',',')})}" class="btn btn-primary">
                                     <span th:text="#{tours.make_hot.button}"></span>
                                 </a>

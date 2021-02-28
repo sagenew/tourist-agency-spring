@@ -23,40 +23,44 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form
+                    <form class="form-inline mb-2"
                           th:object="${discount}"
                           th:action="@{/tours/orders/set-discount}"
                           th:method="post">
-                        <label>
-                            <span th:text="#{orders.discount.step}"></span>
-                            <input type="text"
-                                   th:field="*{step}"
-                                   th:placeholder="${discount.step}"
-                                   class="form-control"
-                                   required/>
-                            <span th:if="${#fields.hasErrors('step')}"
-                                  th:errors="*{step}"
-                                  class="text-danger"></span>
-                        </label>
-                        <label>
-                            <span th:text="#{orders.discount.threshold}"></span>
-                            <input type="text"
-                                   th:field="*{threshold}"
-                                   th:placeholder="${discount.threshold}"
-                                   class="form-control"
-                                   required/>
-                            <span th:if="${#fields.hasErrors('threshold')}"
-                                  th:errors="*{threshold}"
-                                  class="text-danger"></span>
-                        </label>
-                        <input class="btn btn-primary" th:value="#{orders.discount.button.submit}" type="submit">
+                        <div class="form-group mb-1">
+                            <label>
+                                <span th:text="#{orders.discount.step}"></span>
+                                <input type="text"
+                                       th:field="*{step}"
+                                       th:placeholder="${discount.step}"
+                                       class="form-control mx-2"
+                                       required/>
+                                <span th:if="${#fields.hasErrors('step')}"
+                                      th:errors="*{step}"
+                                      class="text-danger"></span>
+                            </label>
+                        </div>
+                        <div class="form-group mx-sm-3 mb-1">
+                            <label>
+                                <span th:text="#{orders.discount.threshold}"></span>
+                                <input type="text"
+                                       th:field="*{threshold}"
+                                       th:placeholder="${discount.threshold}"
+                                       class="form-control mx-2"
+                                       required/>
+                                <span th:if="${#fields.hasErrors('threshold')}"
+                                      th:errors="*{threshold}"
+                                      class="text-danger"></span>
+                            </label>
+                        </div>
+                        <input class="btn btn-primary mb-1" th:value="#{orders.discount.button.submit}" type="submit">
                     </form>
                     <table th:unless="${orders.isEmpty()}" class="table table-striped">
                         <thead>
                         <tr>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='id',column_text=#{orders.id})}"></th>
-                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='user',column_text=#{orders.user})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='tour',column_text=#{orders.tour})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='user',column_text=#{orders.user})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='price',column_text=#{orders.price})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='discount',column_text=#{orders.discount})}"></th>
                             <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours/orders',page=${orders},column='fixedPrice',column_text=#{orders.fixed_price})}"></th>
@@ -102,7 +106,7 @@
                                                     <div class="card-text">
                                                         <span class="text-primary"
                                                               th:text="#{tours.modal.price}"></span>
-                                                        <span class="" th:text="${order.tour.price}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(order.tour.price,1,1)}"></span>
                                                     </div>
                                                     <div class="card-text">
                                                         <span class="text-primary"
@@ -194,10 +198,10 @@
                                 </div>
                             </div>
                             <!--End of user modal window-->
-                            <td><span th:text="${order.price}"></span></td>
-                            <td><span th:text="${order.discount}"></span></td>
-                            <td><span th:text="${order.fixedPrice}"></span></td>
-                            <td>
+                            <td><span th:text="${#numbers.formatDecimal(order.price,1,1)}"></span></td>
+                            <td><span th:text="${#numbers.formatDecimal(order.discount,1,1)}"></span></td>
+                            <td><span th:text="${#numbers.formatDecimal(order.fixedPrice,1,1)}"></span></td>
+                            <td style="width: 25%">
                                 <div class="btn-group btn-block" th:if="${order.isPending()}">
                                     <a class="btn btn-outline-success"
                                        th:href="@{/tours/orders/mark-paid/{id}(id=${order.id},page=${orders.number},size=${orders.size},sort=${orders.sort.toString().replaceAll(': ',',')})}"

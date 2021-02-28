@@ -55,7 +55,7 @@
                 <span class="text-info" th:text="#{users.profile.orders.discount_current}"></span>
                 <span th:text="${user.currentDiscount}"></span>
             </div>
-            <table th:unless="${user.orders.isEmpty()}" class="table table-striped">
+            <table th:unless="${user.orders.isEmpty()}" class="table table-striped mt-2">
                 <thead>
                 <tr>
                     <th th:text="#{users.profile.orders.id}"></th>
@@ -105,7 +105,7 @@
                                             <div class="card-text">
                                                         <span class="text-primary"
                                                               th:text="#{tours.modal.price}"></span>
-                                                <span class="" th:text="${order.tour.price}"></span>
+                                                <span th:text="${#numbers.formatDecimal(order.tour.price,1,1)}"></span>
                                             </div>
                                             <div class="card-text">
                                                         <span class="text-primary"
@@ -135,9 +135,9 @@
                         </div>
                     </div>
                     <!--End modal window-->
-                    <td><span th:text="${order.price}"></span></td>
-                    <td><span th:text="${order.discount}"></span></td>
-                    <td><span th:text="${order.fixedPrice}"></span></td>
+                    <td><span th:text="${#numbers.formatDecimal(order.price,1,1)}"></span></td>
+                    <td><span th:text="${#numbers.formatDecimal(order.discount,1,1)}"></span></td>
+                    <td><span th:text="${#numbers.formatDecimal(order.fixedPrice,1,1)}"></span></td>
                     <td class="text-center" style="width: 25%">
                         <button class="btn btn-info active btn-block" th:if="${order.isPending()}"
                                 th:text="#{users.profile.orders.status.pending}"></button>
