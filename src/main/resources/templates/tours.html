@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All tours</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav th:replace="~{fragments/navbar::navbar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div th:if="${tours.isEmpty()}">
+                        <h1 class="display-5" th:text="#{tours.empty}"></h1>
+                    </div>
+                    <div th:unless="${tours.isEmpty()}">
+                        <h1 class="display-5" th:text="#{tours.header}"></h1>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mt-1">
+                            <a sec:authorize="hasAuthority('ADMIN')"
+                               th:href="@{/tours/add}"
+                               class="btn btn-primary"
+                               th:text="#{tours.button.add}" type="submit">
+                            </a>
+                        </div>
+                    </div>
+                    <table th:unless="${tours.isEmpty()}" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='id',column_text=#{tours.id})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='name',column_text=#{tours.name})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='type',column_text=#{tours.tour_type})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='price',column_text=#{tours.price})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='groupSize',column_text=#{tours.group_size})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='hotel',column_text=#{tours.hotel_type})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/tours',page=${tours},column='isHot',column_text=#{tours.is_hot})}"></th>
+                            <div sec:authorize="hasAuthority('ADMIN')">
+                                <th th:text="#{tours.make_hot.label}"></th>
+                            </div>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="tour : ${tours}">
+                            <td><span th:text="${tour.id}"></span></td>
+                            <td><a href="#tourDetailsModal" data-toggle="modal"
+                                   data-target="#tourDetailsModal"
+                                   th:attrappend="data-target=${tour.id}"
+                                   th:text="${tour.name}"></a></td>
+                            <!--Start modal window-->
+                            <div aria-hidden="true" aria-labelledby="tourDetailsModalTitle" class="modal fade"
+                                 id="tourDetailsModal" role="dialog" tabindex="-1"
+                                 th:attrappend="id=${tour.id}">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title lead" id="timeSpentModalTitle"
+                                                th:text="#{tours.modal.title}">
+                                            </h5>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3>
+                                                        <span th:text="${tour.name}"></span>
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text">
+                                                        <span class="text-primary" th:text="#{tours.modal.type}"></span>
+                                                        <span class="" th:text="${tour.type}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.price}"></span>
+                                                        <span class="" th:text="${tour.price}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.group_size}"></span>
+                                                        <span class="" th:text="${tour.groupSize}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.hotel}"></span>
+                                                        <span class="" th:text="${tour.hotel}"></span>
+                                                    </div>
+                                                    <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.description}"></span>
+                                                        <span class="font-italic" th:text="${tour.description}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="btn-group">
+                                                <a class="btn btn-primary"
+                                                   sec:authorize="isAuthenticated()"
+                                                   th:href="@{/tours/orders/add/{id}(id=${tour.id},page=${tours.number},size=${tours.size},sort=${tours.sort.toString().replaceAll(': ',',')})}"
+                                                   th:text="#{tours.modal.button.order_tour}">
+                                                </a>
+                                                <a class="btn btn-warning"
+                                                   sec:authorize="hasAuthority('ADMIN')"
+                                                   th:href="@{/tours/update/{id}(id=${tour.id})}"
+                                                   th:text="#{tours.modal.button.update_tour}">
+                                                </a>
+                                                <a class="btn btn-danger"
+                                                   sec:authorize="hasAuthority('ADMIN')"
+                                                   th:href="@{/tours/delete/{id}(id=${tour.id},page=${tours.number},size=${tours.size},sort=${tours.sort.toString().replaceAll(': ',',')})}"
+                                                   th:text="#{tours.modal.button.delete_tour}">
+                                                </a>
+                                                <button class="btn btn-secondary" data-dismiss="modal"
+                                                        th:text="#{tours.modal.button.close}"
+                                                        type="button">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End modal window-->
+                            <td><span th:text="${tour.type}"></span></td>
+                            <td><span th:text="${tour.price}"></span></td>
+                            <td><span th:text="${tour.groupSize}"></span></td>
+                            <td><span th:text="${tour.hotel}"></span></td>
+                            <td>
+                                <img th:if="${tour.isHot()}" th:src="@{/images/hot_icon_true.svg}" width="30"
+                                     height="30">
+                                <img th:unless="${tour.isHot()}" th:src="@{/images/hot_icon_false.svg}" width="30"
+                                     height="30">
+                            </td>
+                            <td sec:authorize="hasAuthority('ADMIN')">
+                                <a th:href="@{/tours/make-hot/{id}(id=${tour.id},page=${tours.number},size=${tours.size},sort=${tours.sort.toString().replaceAll(': ',',')})}" class="btn btn-primary">
+                                    <span th:text="#{tours.make_hot.button}"></span>
+                                </a>
+                            </td>
+                            <td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer"
+                         th:include="~{/fragments/pagination.html::page-navigation(url='/tours',page=${tours})}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

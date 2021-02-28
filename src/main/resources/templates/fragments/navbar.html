@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar fragment</title>
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/travel.svg}" class="d-inline-block align-top" alt="" width="35" height="35">
+        Tourism Agency Inc.
+    </a>
+    <div id="navbars" class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}" th:text="#{link.home}"></a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item active">
+                <a class="nav-link" th:href="@{/profile}" th:text="#{link.profile}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/tours}" th:text="#{link.all_tours}"></a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item active">
+                <a class="nav-link" th:href="@{/tours/orders}" th:text="#{link.all_orders}"></a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item active">
+                <a class="nav-link" th:href="@{/users}" th:text="#{link.all_users}"></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="?lang=en">
+                    <img th:src="@{/images/United-kingdom_flag_icon_round.svg}"
+                         class="d-inline-block align-top" alt="" width="30" height="30"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="?lang=ua">
+                    <img th:src="@{/images/ukraine-flag-round-icon-64.png}"
+                         class="d-inline-block align-top" alt="" width="30" height="30"></a>
+            </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0" sec:authorize="!isAuthenticated()">
+            <form action="/registration" method="get">
+                <button class="btn btn-outline-primary ml-3 mr-3 my-2 my-sm-0" th:text="#{button.sign_up}" type="submit"></button>
+            </form>
+            <form action="/login" method="get">
+                <button type="submit" class="btn btn-primary my-2 my-sm-0" th:text="#{button.sign_in}"></button>
+            </form>
+        </div>
+        <div class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()">
+            <form  action="/logout" method="get">
+                <button type="submit" class="btn btn-primary my-2 my-sm-0" th:text="#{button.sign_out}">Log out</button>
+            </form>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

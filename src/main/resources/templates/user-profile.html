@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav th:replace="~{fragments/navbar::navbar}"></nav>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="display-5">
+                <span th:text="#{users.profile.welcome}"></span>
+                <span th:text="${user.username}"></span>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.username}"></span>
+                <span th:text="${user.username}"></span>
+            </div>
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.full_name}"></span>
+                <span th:text="${user.fullName}"></span>
+            </div>
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.email}"></span>
+                <span th:text="${user.email}"></span>
+            </div>
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.bio}"></span>
+                <span th:text="${user.bio}"></span>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div th:if="${user.orders.isEmpty()}">
+                <h4 class="display-5" th:text="#{users.profile.orders.empty}"></h4>
+            </div>
+            <div th:unless="${user.orders.isEmpty()}">
+                <h4 class="display-5" th:text="#{users.profile.orders.header}"></h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.orders.price_total}"></span>
+                <span th:text="${user.getTotalOrdersPrice()}"></span>
+            </div>
+            <div class="card-text">
+                <span class="text-info" th:text="#{users.profile.orders.discount_current}"></span>
+                <span th:text="${user.currentDiscount}"></span>
+            </div>
+            <table th:unless="${user.orders.isEmpty()}" class="table table-striped">
+                <thead>
+                <tr>
+                    <th th:text="#{users.profile.orders.id}"></th>
+                    <th th:text="#{users.profile.orders.tour}"></th>
+                    <th th:text="#{users.profile.orders.price}"></th>
+                    <th th:text="#{users.profile.orders.discount}"></th>
+                    <th th:text="#{users.profile.orders.price_fixed}"></th>
+                    <th th:text="#{users.profile.orders.status}" class="text-center"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${user.orders}">
+                    <td><span th:text="${order.id}"></span></td>
+                    <td><a href="#tourDetailsModal" data-toggle="modal"
+                           data-target="#tourDetailsModal"
+                           th:attrappend="data-target=${order.tour.id}"
+                           th:text="${order.tour.name}"></a></td>
+                    <!--Start modal window-->
+                    <div aria-hidden="true"
+                         aria-labelledby="tourDetailsModalTitle"
+                         class="modal fade"
+                         id="tourDetailsModal" role="dialog" tabindex="-1"
+                         th:attrappend="id=${order.tour.id}">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title lead" id="tourDetailsModalTitle"
+                                        th:text="#{tours.modal.title}">
+                                    </h5>
+                                    <button aria-label="Close" class="close" data-dismiss="modal"
+                                            type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>
+                                                <span th:text="${order.tour.name}"></span>
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                <span class="text-primary" th:text="#{tours.modal.type}"></span>
+                                                <span class="" th:text="${order.tour.type}"></span>
+                                            </div>
+                                            <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.price}"></span>
+                                                <span class="" th:text="${order.tour.price}"></span>
+                                            </div>
+                                            <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.group_size}"></span>
+                                                <span class="" th:text="${order.tour.groupSize}"></span>
+                                            </div>
+                                            <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.hotel}"></span>
+                                                <span class="" th:text="${order.tour.hotel}"></span>
+                                            </div>
+                                            <div class="card-text">
+                                                        <span class="text-primary"
+                                                              th:text="#{tours.modal.description}"></span>
+                                                <span class="font-italic" th:text="${order.tour.description}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                            th:text="#{tours.modal.button.close}"
+                                            type="button">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End modal window-->
+                    <td><span th:text="${order.price}"></span></td>
+                    <td><span th:text="${order.discount}"></span></td>
+                    <td><span th:text="${order.fixedPrice}"></span></td>
+                    <td class="text-center" style="width: 25%">
+                        <button class="btn btn-info active btn-block" th:if="${order.isPending()}"
+                                th:text="#{users.profile.orders.status.pending}"></button>
+                        <button class="btn btn-success active btn-block" th:if="${order.isPaid()}"
+                                th:text="#{users.profile.orders.status.paid}"></button>
+                        <button class="btn btn-danger active btn-block" th:if="${order.isDenied()}"
+                                th:text="#{users.profile.orders.status.denied}"></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

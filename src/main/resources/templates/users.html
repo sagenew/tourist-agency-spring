@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav th:replace="~{fragments/navbar::navbar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div th:if="${users.isEmpty()}">
+                        <h1 class="display-5" th:text="#{users.empty}"></h1>
+                    </div>
+                    <div th:unless="${users.isEmpty()}">
+                        <h1 class="display-5" th:text="#{users.header}">All registered users</h1>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table th:unless="${users.isEmpty()}" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/users',page=${users},column='id',column_text=#{users.id})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/users',page=${users},column='username',column_text=#{users.username})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/users',page=${users},column='authorities',column_text=#{users.roles})}"></th>
+                            <th th:include="~{/fragments/sortable_column.html::sortable_column(url='/users',page=${users},column='enabled',column_text=#{users.status})}" class="text-center"></th>
+                            <th th:text="#{users.edit}" class="text-center"></th>
+                            <th th:text="#{users.delete}" class="text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td><span th:text="${user.id}"></span></td>
+                            <td><span th:text="${user.username}"></span></td>
+                            <td><span th:text="${user.authorities}"></span></td>
+                            <td class="text-center">
+                                <a th:href="@{/users/ban/{id}(id=${user.id})}"
+                                   class="btn btn-danger btn-block" th:if="${user.isEnabled()}"
+                                        th:text="#{users.status.ban}"></a>
+                                <a th:href="@{/users/unban/{id}(id=${user.id})}"
+                                        class="btn btn-success btn-block" th:unless="${user.isEnabled()}"
+                                        th:text="#{users.status.unban}"></a>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/users/update/{id}(id=${user.id})}" class="btn btn-primary">
+                                    <img th:src="@{/images/outline-edit-24px.svg}">
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-primary">
+                                    <img th:src="@{/images/outline-delete-24px.svg}">
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer"
+                     th:include="~{/fragments/pagination.html::page-navigation(url='/users',page=${users})}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

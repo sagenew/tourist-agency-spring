@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Add new tour</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav th:replace="~{fragments/navbar::navbar}"></nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="display-5" th:text="#{tours.add.title}"></h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post" th:action="@{/tours/add}" th:object="${tour}">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col-form-label" for="name" th:text="#{tours.add.tour_name.label}"></label>
+                                <input class="form-control" id="name" th:field="*{name}"
+                                       th:placeholder="#{tours.add.tour_name.placeholder}" type="text"
+                                       required/>
+                                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                      class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-form-label" for="price"
+                                       th:text="#{tours.add.tour_price.label}"></label>
+                                <input class="form-control" id="price" th:field="*{price}"
+                                       th:placeholder="#{tours.add.tour_price.placeholder}" type="text"
+                                       required/>
+                                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+                                      class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-form-label" for="groupSize"
+                                       th:text="#{tours.add.tour_group_size.label}"></label>
+                                <input class="form-control" id="groupSize" th:field="*{groupSize}"
+                                       th:placeholder="#{tours.add.tour_group_size.label}" type="text"
+                                       required/>
+                                <span th:if="${#fields.hasErrors('groupSize')}" th:errors="*{groupSize}"
+                                      class="text-danger"></span>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label class="col-form-label" for="tourType"
+                                           th:text="#{tours.add.tour_type.label}">
+                                    </label>
+                                    <select th:field="*{type}" class="form-control" id="tourType">
+                                        <option th:each="tourType : ${tourTypes}"
+                                                th:text="${tourType}"
+                                                th:value="${tourType.name()}">
+                                        </option>
+                                    </select>
+                                    <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"
+                                          class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="col-form-label" for="hotelType"
+                                           th:text="#{tours.add.hotel_type.label}">
+                                    </label>
+                                    <select th:field="*{hotel}" class="form-control" id="hotelType">
+                                        <option th:each="hotelType : ${hotelTypes}"
+                                                th:text="${hotelType}"
+                                                th:value="${hotelType.name()}">
+                                        </option>
+                                    </select>
+                                    <span th:if="${#fields.hasErrors('hotel')}" th:errors="*{hotel}"
+                                          class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="col-form-label" for="description"
+                                       th:text="#{tours.add.description.label}"></label>
+                                <textarea id="description" rows="4"
+                                          th:field="*{description}"
+                                          th:placeholder="#{tours.add.description.placeholder}"
+                                          class="form-control"></textarea>
+                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                      class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-1">
+                                <input class="btn btn-primary" th:value="#{tours.add.button.submit}" type="submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer::footer}"></footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

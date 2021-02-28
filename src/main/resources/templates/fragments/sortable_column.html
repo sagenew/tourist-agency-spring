@@ -1,0 +1,9 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="sortable_column(url,page,column,column_text)">
+    <a th:if="${#httpServletRequest.getParameter('sort') != (column + ',ASC')}"
+       th:href="@{${url}(page=${page.number},size=${page.size},sort=${column + ',ASC'})}"
+       th:text="${column_text}"></a>
+    <a th:unless="${#httpServletRequest.getParameter('sort') != (column + ',ASC')}"
+       th:href="@{${url}(page=${page.number},size=${page.size},sort=${column + ',DESC'})}"
+       th:text="${column_text}"></a>
+</div>
