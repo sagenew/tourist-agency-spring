@@ -19,14 +19,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+/**
+ * Controller that react on tours related requests
+ *
+ * @see Tour
+ */
 @Controller
 @Log4j2
 public class TourController {
-    private final OrderService orderService;
     private final TourService tourService;
 
-    public TourController(OrderService orderService, TourService tourService) {
-        this.orderService = orderService;
+    public TourController(TourService tourService) {
         this.tourService = tourService;
     }
 

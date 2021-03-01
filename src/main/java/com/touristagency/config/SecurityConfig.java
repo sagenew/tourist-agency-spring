@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Configures paths allowed for different users authorities and configure user authentication method
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
@@ -21,6 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Configure user paths, login and logout paths and error handler
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -54,6 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler);
     }
 
+    /**
+     * Configure authentication manager, user details service and password encoder
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth

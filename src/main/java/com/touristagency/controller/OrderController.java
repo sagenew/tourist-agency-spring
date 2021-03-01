@@ -4,6 +4,7 @@ import com.touristagency.dto.DiscountDTO;
 import com.touristagency.dto.RegisterUserDTO;
 import com.touristagency.dto.UpdateUserDTO;
 import com.touristagency.entity.Discount;
+import com.touristagency.entity.Tour;
 import com.touristagency.entity.User;
 import com.touristagency.entity.enums.Authority;
 import com.touristagency.service.OrderService;
@@ -21,6 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+/**
+ * Controller that react on order related requests
+ *
+ * @see com.touristagency.entity.Order
+ */
 @Controller
 @Log4j2
 public class OrderController {

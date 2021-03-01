@@ -13,23 +13,32 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
-
+/**
+ * Contains beans responsible for locale and message bundles
+ */
 @Configuration
 public class LocaleConfig implements WebMvcConfigurer {
+    /**
+     * Resolve locale from session
+     */
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.UK);
         return sessionLocaleResolver;
     }
-
+    /**
+     * Resolve validator with injected message source
+     */
     @Override
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
         validatorFactoryBean.setValidationMessageSource(messageSource());
         return validatorFactoryBean;
     }
-
+    /**
+     * Resolve interceptor that react to change locale on param lang
+     */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
@@ -42,6 +51,9 @@ public class LocaleConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
+    /**
+     * @return Reloadable message source with set basename and encoding
+     */
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

@@ -1,5 +1,8 @@
 package com.touristagency.util.exception;
 
+/**
+ * Runtime exception that is thrown if new username already exists in the database
+ */
 public class UsernameNotUniqueException extends RuntimeException {
     public UsernameNotUniqueException() {
     }

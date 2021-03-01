@@ -1,6 +1,7 @@
 package com.touristagency.controller;
 
 import com.touristagency.dto.UpdateUserDTO;
+import com.touristagency.entity.Tour;
 import com.touristagency.entity.User;
 import com.touristagency.entity.enums.Authority;
 import com.touristagency.service.UserService;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Controller that react on user related requests
+ *
+ * @see User
+ */
 @Controller
 @Log4j2
 @RequestMapping

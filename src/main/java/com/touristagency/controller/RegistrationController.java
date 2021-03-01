@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Controller that gives user registration related  pages
+ */
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
